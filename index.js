@@ -16,10 +16,6 @@ function sendMatches(chatId, type) {
    Matches.find({}).then(matches => {
       let nextMatch
       let home
-      let dateNow = new Date()
-      let day = dateNow.getDate()
-      let month = dateNow.getMonth()
-      let year = dateNow.getFullYear()
 
       if (type === 'full') {
          const html = matches.map((match, i) => {
@@ -28,18 +24,9 @@ function sendMatches(chatId, type) {
 
          bot.sendMessage(chatId, html, { parse_mode: 'HTML' })
       } else if (type === 'next') {
-         for (let i = 0; i < matches.length; i++) {
-            let matchDay = matches[i].date[0] + matches[i].date[1]
-            let matchMonth = matches[i].date[3] + matches[i].date[4]
-            let matchYear = matches[i].date[6] + matches[i].date[7] + matches[i].date[8] + matches[i].date[9]
-
-            matches[i].type === 'Домашка' ? home = true : false
-
-            if (Number(matchYear) >= Number(year) && Number(matchMonth) >= Number(month) && Number(matchDay) >= Number(day)) {
-               nextMatch = `${matches[i].home} - ${matches[i].guest} <b>${matches[i].date}</b>`
-               break
-            }
-         }
+         let matchData = matches[0]
+         matchData.type === 'Домашка' ? home = true : false
+         nextMatch = `${matchData.home} - ${matchData.guest} <b>${matchData.date}</b>`
 
          bot.sendMessage(chatId, nextMatch, home ? {
             parse_mode: 'HTML', reply_markup: {
@@ -52,12 +39,26 @@ function sendMatches(chatId, type) {
                   ]
                ]
             }
-         } : { parse_mode: 'HTML' })
+         } : {
+            parse_mode: 'HTML', reply_markup: {
+               inline_keyboard: [
+                  [
+                     {
+                        text: 'Подобрать билет на самолет',
+                        url: `${process.env.AVIASALES}`
+                     }
+                  ]
+               ]
+            }
+         })
       }
    })
 }
 
 const bot = new TelegramBot(process.env.TOKEN, { polling: true })
+bot.onText(/\/start/, ctx => {
+   bot.sendMessage(ctx.chat.id, 'Здравствуйте!\nДля просмотра меню бота, отправьте команду /menu или выбирете её из списка команд, доступных по нажатию на "/" внизу страницы')
+})
 
 bot.onText(/\/menu/, ctx => {
    bot.sendMessage(ctx.chat.id, 'Меню', {
