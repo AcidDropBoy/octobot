@@ -90,7 +90,13 @@ bot.on('message', ctx => {
             inline_keyboard: [
                [
                   {
-                     text: 'Torpedo Rave',
+                     text: 'Torpedo Rave в Telegram',
+                     url: `${process.env.TGLINK1}`
+                  }
+               ],
+               [
+                  {
+                     text: 'Torpedo Rave в Instagram',
                      url: `${process.env.INST1}`
                   }
                ],
