@@ -8,7 +8,7 @@ const ip = process.env.IP || 'localhost'
 
 const port = process.env.PORT || 8080
 
-const url = `https://telegram.me/@okt0bot`
+const url = `https://telegram.me/okt0bot`
 
 const server = http.createServer((request, response) => {
   response.writeHead(200, {'Content-Type': 'text/html'})
