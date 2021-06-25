@@ -2,6 +2,12 @@ require('dotenv').config()
 const TelegramBot = require('node-telegram-bot-api')
 const mongoose = require('mongoose')
 require('./matches.model')
+let http = require('http');
+
+http.createServer(function (req, res) {
+   res.writeHead(200, {'Content-Type': 'text/plain'});
+   res.end();
+ }).listen(5000);
 
 mongoose.connect(process.env.BDURL, {
    useNewUrlParser: true,
