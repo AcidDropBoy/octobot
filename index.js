@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 require('./matches.model')
 
-const app = express
+const app = express()
 
 const PORT = process.env.PORT || 80
 
