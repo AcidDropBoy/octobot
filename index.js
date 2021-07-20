@@ -1,23 +1,12 @@
 require('dotenv').config()
 const TelegramBot = require('node-telegram-bot-api')
 const mongoose = require('mongoose')
+const express = require('express')
 require('./matches.model')
-const http = require('http')
 
-const ip = process.env.IP || 'localhost'
+const app = express
 
-const port = process.env.PORT || 8080
-
-const url = `https://telegram.me/okt0bot`
-
-const server = http.createServer((request, response) => {
-  response.writeHead(200, {'Content-Type': 'text/html'})
-  response.end(`This is Sinfest bot on <a href = '${url}'>${url}</a>`)
-})
-
-server.listen(port)
-
-console.log(`Server listening at http://${ip}:${port}/`)
+const PORT = process.env.PORT || 80
 
 mongoose.connect(process.env.BDURL, {
    useNewUrlParser: true,
@@ -126,4 +115,8 @@ bot.on('message', ctx => {
          }
       })
    }
+})
+
+app.listen(PORT, () => {
+   console.log(`Bot has been started on port: ${PORT}`)
 })
